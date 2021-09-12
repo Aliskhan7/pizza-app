@@ -26,6 +26,7 @@ const sortItems = [
 function Home() {
   const dispatch = useDispatch();
   const items = useSelector(({ pizzas }) => pizzas.items);
+  const cartItems = useSelector(({ cart }) => cart.items);
   const loading = useSelector(({ pizzas }) => pizzas.loading);
   const { category, sortBy } = useSelector(({ filters }) => filters);
 
@@ -42,7 +43,7 @@ function Home() {
   }, []);
 
   const handleAddPizzaToCart = (obj) =>{
-    console.log(obj)
+    dispatch(addPizzaToCart(obj));
   }
 
   return (
@@ -64,8 +65,9 @@ function Home() {
         {loading
           ? items.map((obj) => (
               <PizzaBlock
-                onClickAddPizza={addPizzaToCart} //узнать почему не работает эта кнопка
+                onClickAddPizza={handleAddPizzaToCart}
                 key={obj.id}
+                addedCounter={cartItems[obj.id] && cartItems[obj.id].items.length}
                 {...obj}
               />
             ))
